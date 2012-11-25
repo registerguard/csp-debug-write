@@ -1,0 +1,112 @@
+<csr:rule name="custom.rg.debug.WriteRule" match="custom:rg:debug:write" empty>
+	
+	<csr:class super="dt.common.page.Rule" />
+	
+	<csr:description>
+		
+		<h1>custom.rg.debug.WriteRule</h1>
+		
+		<ul>
+			<li>Version: v1.0.0</li>
+			<li>Date: Monday, November 24, 2012</li>
+			<li>Docs: <a href="https://github.com/registerguard/csp-debug-write">https://github.com/registerguard/csp-debug-write</a></li>
+		</ul>
+		
+		<p>
+			The <code>&lt;custom:rg:debug:write&gt;</code> RULE (aka CSP tag) displays the names and values of all variables in the local variable environment, including private variables.
+			<br>
+			It does not display process-private globals.
+			<br>
+			It lists variables by name in ASCII order.
+			<br>
+			It lists subscripted variables in subscript tree order.
+		</p>
+		
+	</csr:description>
+	
+	<csr:attribute name="prehtml"  description="PREHTML section (before &lt;doctype&gt;). A numeric value will determine the relative position of the output in this section. Default is 0. Negative is beginning of section or positive is end of section." type="prehtml:STRING"  />
+	<csr:attribute name="head"     description="HEAD section (in &lt;head&gt;). A numeric value will determine the relative position of the output in this section. Default is 0. Negative is beginning of section or positive is end of section."           type="head:STRING"     />
+	<csr:attribute name="body"     description="BODY section (in &lt;body&gt;). A numeric value will determine the relative position of the output in this section. Default is 0. Negative is beginning of section or positive is end of section."           type="body:STRING"     />
+	<csr:attribute name="posthtml" description="POSTHTML section (after &lt;/html&gt;). A numeric value will determine the relative position of the output in this section. Default is 0. Negative is beginning of section or positive is end of section."   type="posthtml:STRING" />
+	<csr:attribute name="this"     description="Called in place (immediately invoked). This attribute doesn't (currently) take any arguments."                                                                                                               type="this:STRING"     />
+	
+	<csr:action>
+		
+		<script language="cache" runat="compiler">
+			do ##this.RenderDTStartTag()
+		</script>
+		
+		<script language="cache" runat="server">
+			
+			if (##'..IsDefined("this")'## || (( ' ##'..IsDefined("prehtml")'##) && ( ' ##'..IsDefined("head")'##) && ( ' ##'..IsDefined("body")'##) && ( ' ##'..IsDefined("posthtml")'##))) {
+				
+				do ##class(custom.rg.debug.Write).all("this")
+				
+			}
+			
+		</script>
+		
+		<csr:section name="PREHTML" block="##(##this.GetAttribute("prehtml"))##">
+			
+			<script language="cache" runat="server">
+				
+				if (##'..IsDefined("prehtml")'##) {
+					
+					do ##class(custom.rg.debug.Write).all("prehtml")
+					
+				}
+				
+			</script>
+			
+		</csr:section>
+		
+		
+		<csr:section name="HEAD" block="##(##this.GetAttribute("head"))##">
+			
+			<script language="cache" runat="server">
+				
+				if (##'..IsDefined("head")'##) {
+					
+					do ##class(custom.rg.debug.Write).all("head")
+					
+				}
+				
+			</script>
+			
+		</csr:section>
+		
+		<csr:section name="BODY" block="##(##this.GetAttribute("body"))##">
+			
+			<script language="cache" runat="server">
+				
+				if (##'..IsDefined("body")'##) {
+					
+					do ##class(custom.rg.debug.Write).all("body")
+					
+				}
+				
+			</script>
+			
+		</csr:section>
+		
+		<csr:section name="POSTHTML" block="##(##this.GetAttribute("posthtml"))##">
+			
+			<script language="cache" runat="server">
+				
+				if (##'..IsDefined("posthtml")'##) {
+					
+					do ##class(custom.rg.debug.Write).all("posthtml")
+					
+				}
+				
+			</script>
+			
+		</csr:section>
+		
+		<script language="cache" runat="compiler">
+			do ##this.RenderDTEndTag()
+		</script>
+		
+	</csr:action>
+	
+</csr:rule>
