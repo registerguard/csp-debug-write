@@ -199,12 +199,6 @@ currIO=&quot;UTF8&quot;
 > currIO=&quot;UTF8&quot;
 > ---------- PREHTML ----------
 > </pre>
-> <!doctype html>
-> <html>
-> <head>
-> <meta charset="utf-8">
-> <title>Testing Debug Write</title>
-> <meta name="description" content="">
 > <meta name="keywords" content="">
 > <pre class="pretty" >
 > ---------- HEAD ----------
@@ -218,9 +212,6 @@ currIO=&quot;UTF8&quot;
 > currIO=&quot;UTF8&quot;
 > ---------- HEAD ----------
 > </pre>
-> </head>
-> <body>
-> <a class="drs" href="#">&nbsp;<span><b>&lt;custom:rg:debug:write this="" prehtml="" head="" body="2" posthtml="" attributes="class|pretty"&gt;</b></span></a>
 > <pre class="pretty" >
 > ---------- THIS ----------
 > %CSPsc=1
@@ -236,7 +227,6 @@ currIO=&quot;UTF8&quot;
 > currIO=&quot;UTF8&quot;
 > ---------- THIS ----------
 > </pre>
-> <a class="dre" href="#">&nbsp;<span><b>&lt;/custom:rg:debug:write this="" prehtml="" head="" body="2" posthtml="" attributes="class|pretty"&gt;</b><br>Elapsed: .001055<br>Globals: 3<br>Lines: 102</span></a>
 > <p>Nam ut aliquet diam. Suspendisse et mauris tempus urna ullamcorper placerat at non eros. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus pharetra pellentesque sem eu dictum. Nunc accumsan sagittis velit, quis condimentum diam hendrerit a. Fusce sollicitudin, nibh eu bibendum aliquet, magna nulla lacinia nisl, vitae imperdiet diam leo quis massa. Pellentesque sodales rutrum tempus. Vivamus nunc nisi, auctor bibendum condimentum quis, tincidunt sed magna. Nunc a quam dolor. Donec eu mi in diam placerat luctus in in massa. Etiam commodo, odio et lobortis condimentum, sapien sapien iaculis tellus, et rhoncus leo massa ut diam. Ut molestie aliquet lectus, nec condimentum sem mollis id.</p>
 > <pre class="pretty" >
 > ---------- RIGHT HERE! ----------
@@ -273,8 +263,6 @@ currIO=&quot;UTF8&quot;
 > currIO=&quot;UTF8&quot;
 > ---------- BODY ----------
 > </pre>
-> </body>
-> </html>
 > <pre class="pretty" >
 > ---------- POSTHTML ----------
 > %CSPsc=1
