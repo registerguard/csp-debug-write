@@ -48,7 +48,13 @@ Output debug info into the current location:
 <custom:rg:debug:write />
 ```
 
-Output debug info into all of the above:
+… and/or `this`:
+
+```html
+<custom:rg:debug:write this />
+```
+
+Output debug info into all of the above sections:
 
 ```html
 <custom:rg:debug:write this prehtml head body posthtml />
