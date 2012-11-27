@@ -50,7 +50,6 @@
 			
 		</csr:section>
 		
-		
 		<csr:section name="HEAD" block="##(..GetAttribute("head"))##">
 			
 			<script language="cache" runat="server">
