@@ -14,18 +14,23 @@ Class custom.rg.debug.Write Extends %RegisteredObject
 /// 
 /// @see https://groups.google.com/d/topic/intersystems-public-cache/-CmAIWmtHdY/discussion
 /// 
+/// @param qs { %String } URI query string parameter.
 /// @param label { %String } Used as a label for the output.
 /// @param attr { %String } HTML attributes and values to apply to <code>&lt;pre&gt;</code> tag.
 ClassMethod all(
+	qs As %String = "",
 	label As %String = "",
 	attr As %String = "")
 {
 	
-	; Only write debug info in "debug" exists as a query string in the URI:
-	if ($get(%request.Data("debug", 1), 0)) {
+	; Write debug info if "qs" is an empty string OR if value of "qs" variable exists as a query string parameter in the URI:
+	if (( ' $length(qs)) || $get(%request.Data(qs, 1), 0)) {
 		
-		; Opening debug info label:
-		write !, "<pre", ..attrs(attr), ">", !, "---------- ", $zconvert(label, "U"), " ----------"
+		; Opening <pre> tag:
+		write !, "<pre", ..attrs(attr), ">"
+		
+		; Opening label:
+		write:($length(label)) !, "---------- ", $zconvert(label, "U"), " ----------"
 		
 		; Try to otput debug info:
 		try {
@@ -51,8 +56,11 @@ ClassMethod all(
 			
 		}
 		
-		; Closing debug info label:
-		write !, "---------- ", $zconvert(label, "U"), " ----------", !, "</pre>", !
+		; Closing label:
+		write:($length(label)) !, "---------- ", $zconvert(label, "U"), " ----------"
+		
+		; Closing <pre> tag:
+		write !, "</pre>", !
 		
 	}
 }
@@ -99,6 +107,9 @@ ClassMethod attrs(
 			}
 			
 		}
+		
+		; Remove trailing whitespace:
+		set return = $zstrip(return, ">W")
 		
 	}
 	

@@ -12,12 +12,13 @@
 		
 	</csr:description>
 	
-	<csr:attribute name="prehtml"    description="PREHTML section (before &lt;doctype&gt;)."                                               type="prehtml:STRING"    />
-	<csr:attribute name="head"       description="HEAD section (in &lt;head&gt;)."                                                         type="head:STRING"       />
-	<csr:attribute name="body"       description="BODY section (in &lt;body&gt;)."                                                         type="body:STRING"       />
-	<csr:attribute name="posthtml"   description="POSTHTML section (after &lt;/html&gt;)."                                                 type="posthtml:STRING"   />
-	<csr:attribute name="this"       description="Called in place (immediately invoked)."                                                  type="this:STRING"       />
-	<csr:attribute name="attributes" description="Delimited attributes to include in the &lt;pre&gt; tag. Format: 'attribute|value, ...'." type="attributes:STRING" />
+	<csr:attribute name="prehtml"     description="PREHTML section (before &lt;doctype&gt;)."                                               type="prehtml:STRING"     />
+	<csr:attribute name="head"        description="HEAD section (in &lt;head&gt;)."                                                         type="head:STRING"        />
+	<csr:attribute name="body"        description="BODY section (in &lt;body&gt;)."                                                         type="body:STRING"        />
+	<csr:attribute name="posthtml"    description="POSTHTML section (after &lt;/html&gt;)."                                                 type="posthtml:STRING"    />
+	<csr:attribute name="this"        description="Called in place (immediately invoked)."                                                  type="this:STRING"        />
+	<csr:attribute name="attributes"  description="Delimited attributes to include in the &lt;pre&gt; tag. Format: 'attribute|value, ...'." type="attributes:STRING"  />
+	<csr:attribute name="querystring" description="Query string parameter to use. Default is 'debug'."                                      type="querystring:STRING" />
 	
 	<csr:action>
 		
@@ -29,7 +30,7 @@
 			
 			if (##'..IsDefined("this")'## || (( ' ##'..IsDefined("prehtml")'##) && ( ' ##'..IsDefined("head")'##) && ( ' ##'..IsDefined("body")'##) && ( ' ##'..IsDefined("posthtml")'##))) {
 				
-				do ##class(custom.rg.debug.Write).all("this", ##'..GetAttribute("attributes")'##)
+				do ##class(custom.rg.debug.Write).all(##'..GetAttribute("querystring", "debug")'##, "this", ##'..GetAttribute("attributes")'##)
 				
 			}
 			
@@ -41,7 +42,7 @@
 				
 				if (##'..IsDefined("prehtml")'##) {
 					
-					do ##class(custom.rg.debug.Write).all("prehtml", ##'..GetAttribute("attributes")'##)
+					do ##class(custom.rg.debug.Write).all(##'..GetAttribute("querystring", "debug")'##, "prehtml", ##'..GetAttribute("attributes")'##)
 					
 				}
 				
@@ -56,7 +57,7 @@
 				
 				if (##'..IsDefined("head")'##) {
 					
-					do ##class(custom.rg.debug.Write).all("head", ##'..GetAttribute("attributes")'##)
+					do ##class(custom.rg.debug.Write).all(##'..GetAttribute("querystring", "debug")'##, "head", ##'..GetAttribute("attributes")'##)
 					
 				}
 				
@@ -70,7 +71,7 @@
 				
 				if (##'..IsDefined("body")'##) {
 					
-					do ##class(custom.rg.debug.Write).all("body", ##'..GetAttribute("attributes")'##)
+					do ##class(custom.rg.debug.Write).all(##'..GetAttribute("querystring", "debug")'##, "body", ##'..GetAttribute("attributes")'##)
 					
 				}
 				
@@ -84,7 +85,7 @@
 				
 				if (##'..IsDefined("posthtml")'##) {
 					
-					do ##class(custom.rg.debug.Write).all("posthtml", ##'..GetAttribute("attributes")'##)
+					do ##class(custom.rg.debug.Write).all(##'..GetAttribute("querystring", "debug")'##, "posthtml", ##'..GetAttribute("attributes")'##)
 					
 				}
 				

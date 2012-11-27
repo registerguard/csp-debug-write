@@ -8,11 +8,15 @@
 
 * Uses an argumentless [`zwrite`](http://docs.intersystems.com/cache20091/csp/docbook/DocBook.UI.Page.cls?KEY=RCOS_czwrite) under the hood.* Process-private globals are not displayed.* Variables are listed by name in ASCII order.* Subscripted variables are listed in subscript tree order.
 * The debug output's HTML has been escaped.
-* Debug output labels.
+* Debug output labels (optional).
+* User-defined URI query string (optional).
+* Unlimited `<pre>` tag attributes.
 
 ----
 
 #### USAGE
+
+##### Tags:
 
 Output debug info into the document right before the `<!doctype html>` tag:
 
@@ -50,6 +54,14 @@ Output debug info into all of the above:
 <custom:rg:debug:write this prehtml head body posthtml />
 ```
 
+##### API:
+
+Output debug info without `querystring` and `label` arguments (the empty strings can be omitted - keep the commas though):
+
+```
+do ##class(custom.rg.debug.Write).all("", "", "class|pretty")
+```
+
 ---
 
 #### ATTRIBUTES
@@ -60,6 +72,7 @@ Output debug info into all of the above:
 4. `posthtml`: `POSTHTML` section (after `</html>`).
 5. `this`: Called in place (immediately invoked).
 6. `attributes`: Delimited attributes to include in the `<pre>` tag. Format: `attribute|value, attribute|value, …`.
+7. `querystring`: Query string parameter to use. Default is `debug`.
 
 The `prehtml`, `head`, `body` and `posthtml` attributes accept a numeric value which is used to relatively position the content within the section; a negative number is the beginning of a section and a positive number is the end of a section. The default value is `1`.
 
@@ -72,19 +85,34 @@ The `prehtml`, `head`, `body` and `posthtml` attributes accept a numeric value w
 **Before:**
 
 ```html
-<!doctype html><html><head><meta charset="utf-8"><title>Testing Debug Write</title><meta name="description" content=""><meta name="keywords" content=""></head><body><custom:rg:debug:write this prehtml head body="2" posthtml attributes="class|pretty" /><p>Nam ut aliquet diam. Suspendisse et mauris tempus urna ullamcorper placerat at non eros. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus pharetra pellentesque sem eu dictum. Nunc accumsan sagittis velit, quis condimentum diam hendrerit a. Fusce sollicitudin, nibh eu bibendum aliquet, magna nulla lacinia nisl, vitae imperdiet diam leo quis massa. Pellentesque sodales rutrum tempus. Vivamus nunc nisi, auctor bibendum condimentum quis, tincidunt sed magna. Nunc a quam dolor. Donec eu mi in diam placerat luctus in in massa. Etiam commodo, odio et lobortis condimentum, sapien sapien iaculis tellus, et rhoncus leo massa ut diam. Ut molestie aliquet lectus, nec condimentum sem mollis id.</p>#[ do ##class(custom.rg.debug.Write).all("right here!", "class|pretty") ]#<p>Praesent sit amet nulla tortor. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Proin elementum tincidunt arcu at congue. Sed rhoncus suscipit augue, in placerat eros vestibulum nec. Donec ac diam turpis, sed lobortis ipsum. Ut eros est, laoreet ac hendrerit id, ullamcorper id lorem. Aenean fermentum lectus eu purus gravida facilisis eu at elit. Donec sapien justo, sollicitudin eget commodo in, blandit non massa. Nulla quis sagittis velit. Phasellus nibh diam, viverra consequat tincidunt et, luctus eget nunc. Cras aliquet lacinia dolor vel condimentum.</p></body></html>
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Testing Debug Write</title>
+<meta name="description" content="">
+<meta name="keywords" content="">
+</head>
+<body>
+<custom:rg:debug:write this prehtml head body="2" posthtml attributes="class|pretty" />
+<p>Nam ut aliquet diam. Suspendisse et mauris tempus urna ullamcorper placerat at non eros. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus pharetra pellentesque sem eu dictum. Nunc accumsan sagittis velit, quis condimentum diam hendrerit a. Fusce sollicitudin, nibh eu bibendum aliquet, magna nulla lacinia nisl, vitae imperdiet diam leo quis massa. Pellentesque sodales rutrum tempus. Vivamus nunc nisi, auctor bibendum condimentum quis, tincidunt sed magna. Nunc a quam dolor. Donec eu mi in diam placerat luctus in in massa. Etiam commodo, odio et lobortis condimentum, sapien sapien iaculis tellus, et rhoncus leo massa ut diam. Ut molestie aliquet lectus, nec condimentum sem mollis id.</p>
+#[ do ##class(custom.rg.debug.Write).all("", "right here!", "class|pretty") ]#
+<p>Praesent sit amet nulla tortor. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Proin elementum tincidunt arcu at congue. Sed rhoncus suscipit augue, in placerat eros vestibulum nec. Donec ac diam turpis, sed lobortis ipsum. Ut eros est, laoreet ac hendrerit id, ullamcorper id lorem. Aenean fermentum lectus eu purus gravida facilisis eu at elit. Donec sapien justo, sollicitudin eget commodo in, blandit non massa. Nulla quis sagittis velit. Phasellus nibh diam, viverra consequat tincidunt et, luctus eget nunc. Cras aliquet lacinia dolor vel condimentum.</p>
+</body>
+</html>
 ```
 
 **After:**
 
 ```html
-<pre class="pretty" >
+<pre class="pretty">
 ---------- PREHTML ----------
 %CSPsc=1
 %request=&lt;OBJECT REFERENCE&gt;[1@%CSP.Request]
 %response=&lt;OBJECT REFERENCE&gt;[2@%CSP.Response]
 %session=&lt;OBJECT REFERENCE&gt;[3@%CSP.Session]
 &lt;Private variables&gt;
+qs=&quot;debug&quot;
 label=&quot;prehtml&quot;
 attr=&quot;class|pretty&quot;
 currIO=&quot;UTF8&quot;
@@ -97,13 +125,14 @@ currIO=&quot;UTF8&quot;
 <title>Testing Debug Write</title>
 <meta name="description" content="">
 <meta name="keywords" content="">
-<pre class="pretty" >
+<pre class="pretty">
 ---------- HEAD ----------
 %CSPsc=1
 %request=&lt;OBJECT REFERENCE&gt;[1@%CSP.Request]
 %response=&lt;OBJECT REFERENCE&gt;[2@%CSP.Response]
 %session=&lt;OBJECT REFERENCE&gt;[3@%CSP.Session]
 &lt;Private variables&gt;
+qs=&quot;debug&quot;
 label=&quot;head&quot;
 attr=&quot;class|pretty&quot;
 currIO=&quot;UTF8&quot;
@@ -112,24 +141,25 @@ currIO=&quot;UTF8&quot;
 </head>
 <body>
 <a class="drs" href="#">&nbsp;<span><b>&lt;custom:rg:debug:write this="" prehtml="" head="" body="2" posthtml="" attributes="class|pretty"&gt;</b></span></a>
-<pre class="pretty" >
+<pre class="pretty">
 ---------- THIS ----------
 %CSPsc=1
 %request=&lt;OBJECT REFERENCE&gt;[1@%CSP.Request]
 %response=&lt;OBJECT REFERENCE&gt;[2@%CSP.Response]
 %session=&lt;OBJECT REFERENCE&gt;[3@%CSP.Session]
 Timers=1
-Timers(1)=&quot;	��0;�T1�&nbsp;V�&quot;
+Timers(1)=&quot;	����9U�c&amp;��&quot;
 Timers(1,&quot;Attributes&quot;)=&quot;this=&quot;&quot; prehtml=&quot;&quot; head=&quot;&quot; body=&quot;2&quot; posthtml=&quot;&quot; attributes=&quot;class|pretty&quot;&quot;
 &lt;Private variables&gt;
+qs=&quot;debug&quot;
 label=&quot;this&quot;
 attr=&quot;class|pretty&quot;
 currIO=&quot;UTF8&quot;
 ---------- THIS ----------
 </pre>
-<a class="dre" href="#">&nbsp;<span><b>&lt;/custom:rg:debug:write this="" prehtml="" head="" body="2" posthtml="" attributes="class|pretty"&gt;</b><br>Elapsed: .001055<br>Globals: 3<br>Lines: 102</span></a>
+<a class="dre" href="#">&nbsp;<span><b>&lt;/custom:rg:debug:write this="" prehtml="" head="" body="2" posthtml="" attributes="class|pretty"&gt;</b><br>Elapsed: .000475<br>Globals: 3<br>Lines: 51</span></a>
 <p>Nam ut aliquet diam. Suspendisse et mauris tempus urna ullamcorper placerat at non eros. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus pharetra pellentesque sem eu dictum. Nunc accumsan sagittis velit, quis condimentum diam hendrerit a. Fusce sollicitudin, nibh eu bibendum aliquet, magna nulla lacinia nisl, vitae imperdiet diam leo quis massa. Pellentesque sodales rutrum tempus. Vivamus nunc nisi, auctor bibendum condimentum quis, tincidunt sed magna. Nunc a quam dolor. Donec eu mi in diam placerat luctus in in massa. Etiam commodo, odio et lobortis condimentum, sapien sapien iaculis tellus, et rhoncus leo massa ut diam. Ut molestie aliquet lectus, nec condimentum sem mollis id.</p>
-<pre class="pretty" >
+<pre class="pretty">
 ---------- RIGHT HERE! ----------
 %CSPsc=1
 %mmmu1=&quot;&quot;
@@ -138,16 +168,17 @@ currIO=&quot;UTF8&quot;
 %response=&lt;OBJECT REFERENCE&gt;[2@%CSP.Response]
 %session=&lt;OBJECT REFERENCE&gt;[3@%CSP.Session]
 Timers=0
-gRequestId=82529255
+gRequestId=82529275
 ruleError=&quot;&quot;
 &lt;Private variables&gt;
+qs=&quot;&quot;
 label=&quot;right here!&quot;
 attr=&quot;class|pretty&quot;
 currIO=&quot;UTF8&quot;
 ---------- RIGHT HERE! ----------
 </pre>
 <p>Praesent sit amet nulla tortor. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Proin elementum tincidunt arcu at congue. Sed rhoncus suscipit augue, in placerat eros vestibulum nec. Donec ac diam turpis, sed lobortis ipsum. Ut eros est, laoreet ac hendrerit id, ullamcorper id lorem. Aenean fermentum lectus eu purus gravida facilisis eu at elit. Donec sapien justo, sollicitudin eget commodo in, blandit non massa. Nulla quis sagittis velit. Phasellus nibh diam, viverra consequat tincidunt et, luctus eget nunc. Cras aliquet lacinia dolor vel condimentum.</p>
-<pre class="pretty" >
+<pre class="pretty">
 ---------- BODY ----------
 %CSPsc=1
 %mmmu1=&quot;&quot;
@@ -156,9 +187,10 @@ currIO=&quot;UTF8&quot;
 %response=&lt;OBJECT REFERENCE&gt;[2@%CSP.Response]
 %session=&lt;OBJECT REFERENCE&gt;[3@%CSP.Session]
 Timers=0
-gRequestId=82529255
+gRequestId=82529275
 ruleError=&quot;&quot;
 &lt;Private variables&gt;
+qs=&quot;debug&quot;
 label=&quot;body&quot;
 attr=&quot;class|pretty&quot;
 currIO=&quot;UTF8&quot;
@@ -166,7 +198,7 @@ currIO=&quot;UTF8&quot;
 </pre>
 </body>
 </html>
-<pre class="pretty" >
+<pre class="pretty">
 ---------- POSTHTML ----------
 %CSPsc=1
 %mmmu1=&quot;&quot;
@@ -175,9 +207,10 @@ currIO=&quot;UTF8&quot;
 %response=&lt;OBJECT REFERENCE&gt;[2@%CSP.Response]
 %session=&lt;OBJECT REFERENCE&gt;[3@%CSP.Session]
 Timers=0
-gRequestId=82529255
+gRequestId=82529275
 ruleError=&quot;&quot;
 &lt;Private variables&gt;
+qs=&quot;debug&quot;
 label=&quot;posthtml&quot;
 attr=&quot;class|pretty&quot;
 currIO=&quot;UTF8&quot;
@@ -187,48 +220,50 @@ currIO=&quot;UTF8&quot;
 
 … and, here's the HTML output:
 
-> <pre class="pretty" >
+> <pre class="pretty">
 > ---------- PREHTML ----------
 > %CSPsc=1
 > %request=&lt;OBJECT REFERENCE&gt;[1@%CSP.Request]
 > %response=&lt;OBJECT REFERENCE&gt;[2@%CSP.Response]
 > %session=&lt;OBJECT REFERENCE&gt;[3@%CSP.Session]
 > &lt;Private variables&gt;
+> qs=&quot;debug&quot;
 > label=&quot;prehtml&quot;
 > attr=&quot;class|pretty&quot;
 > currIO=&quot;UTF8&quot;
 > ---------- PREHTML ----------
 > </pre>
-> <meta name="keywords" content="">
-> <pre class="pretty" >
+> <pre class="pretty">
 > ---------- HEAD ----------
 > %CSPsc=1
 > %request=&lt;OBJECT REFERENCE&gt;[1@%CSP.Request]
 > %response=&lt;OBJECT REFERENCE&gt;[2@%CSP.Response]
 > %session=&lt;OBJECT REFERENCE&gt;[3@%CSP.Session]
 > &lt;Private variables&gt;
+> qs=&quot;debug&quot;
 > label=&quot;head&quot;
 > attr=&quot;class|pretty&quot;
 > currIO=&quot;UTF8&quot;
 > ---------- HEAD ----------
 > </pre>
-> <pre class="pretty" >
+> <pre class="pretty">
 > ---------- THIS ----------
 > %CSPsc=1
 > %request=&lt;OBJECT REFERENCE&gt;[1@%CSP.Request]
 > %response=&lt;OBJECT REFERENCE&gt;[2@%CSP.Response]
 > %session=&lt;OBJECT REFERENCE&gt;[3@%CSP.Session]
 > Timers=1
-> Timers(1)=&quot;	��0;�T1�&nbsp;V�&quot;
+> Timers(1)=&quot;	����9U�c&amp;��&quot;
 > Timers(1,&quot;Attributes&quot;)=&quot;this=&quot;&quot; prehtml=&quot;&quot; head=&quot;&quot; body=&quot;2&quot; posthtml=&quot;&quot; attributes=&quot;class|pretty&quot;&quot;
 > &lt;Private variables&gt;
+> qs=&quot;debug&quot;
 > label=&quot;this&quot;
 > attr=&quot;class|pretty&quot;
 > currIO=&quot;UTF8&quot;
 > ---------- THIS ----------
 > </pre>
 > <p>Nam ut aliquet diam. Suspendisse et mauris tempus urna ullamcorper placerat at non eros. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus pharetra pellentesque sem eu dictum. Nunc accumsan sagittis velit, quis condimentum diam hendrerit a. Fusce sollicitudin, nibh eu bibendum aliquet, magna nulla lacinia nisl, vitae imperdiet diam leo quis massa. Pellentesque sodales rutrum tempus. Vivamus nunc nisi, auctor bibendum condimentum quis, tincidunt sed magna. Nunc a quam dolor. Donec eu mi in diam placerat luctus in in massa. Etiam commodo, odio et lobortis condimentum, sapien sapien iaculis tellus, et rhoncus leo massa ut diam. Ut molestie aliquet lectus, nec condimentum sem mollis id.</p>
-> <pre class="pretty" >
+> <pre class="pretty">
 > ---------- RIGHT HERE! ----------
 > %CSPsc=1
 > %mmmu1=&quot;&quot;
@@ -237,16 +272,17 @@ currIO=&quot;UTF8&quot;
 > %response=&lt;OBJECT REFERENCE&gt;[2@%CSP.Response]
 > %session=&lt;OBJECT REFERENCE&gt;[3@%CSP.Session]
 > Timers=0
-> gRequestId=82529255
+> gRequestId=82529275
 > ruleError=&quot;&quot;
 > &lt;Private variables&gt;
+> qs=&quot;&quot;
 > label=&quot;right here!&quot;
 > attr=&quot;class|pretty&quot;
 > currIO=&quot;UTF8&quot;
 > ---------- RIGHT HERE! ----------
 > </pre>
 > <p>Praesent sit amet nulla tortor. Pellentesque habitant morbi tristique senectus et netus et malesuada fames ac turpis egestas. Proin elementum tincidunt arcu at congue. Sed rhoncus suscipit augue, in placerat eros vestibulum nec. Donec ac diam turpis, sed lobortis ipsum. Ut eros est, laoreet ac hendrerit id, ullamcorper id lorem. Aenean fermentum lectus eu purus gravida facilisis eu at elit. Donec sapien justo, sollicitudin eget commodo in, blandit non massa. Nulla quis sagittis velit. Phasellus nibh diam, viverra consequat tincidunt et, luctus eget nunc. Cras aliquet lacinia dolor vel condimentum.</p>
-> <pre class="pretty" >
+> <pre class="pretty">
 > ---------- BODY ----------
 > %CSPsc=1
 > %mmmu1=&quot;&quot;
@@ -255,15 +291,16 @@ currIO=&quot;UTF8&quot;
 > %response=&lt;OBJECT REFERENCE&gt;[2@%CSP.Response]
 > %session=&lt;OBJECT REFERENCE&gt;[3@%CSP.Session]
 > Timers=0
-> gRequestId=82529255
+> gRequestId=82529275
 > ruleError=&quot;&quot;
 > &lt;Private variables&gt;
+> qs=&quot;debug&quot;
 > label=&quot;body&quot;
 > attr=&quot;class|pretty&quot;
 > currIO=&quot;UTF8&quot;
 > ---------- BODY ----------
 > </pre>
-> <pre class="pretty" >
+> <pre class="pretty">
 > ---------- POSTHTML ----------
 > %CSPsc=1
 > %mmmu1=&quot;&quot;
@@ -272,9 +309,10 @@ currIO=&quot;UTF8&quot;
 > %response=&lt;OBJECT REFERENCE&gt;[2@%CSP.Response]
 > %session=&lt;OBJECT REFERENCE&gt;[3@%CSP.Session]
 > Timers=0
-> gRequestId=82529255
+> gRequestId=82529275
 > ruleError=&quot;&quot;
 > &lt;Private variables&gt;
+> qs=&quot;debug&quot;
 > label=&quot;posthtml&quot;
 > attr=&quot;class|pretty&quot;
 > currIO=&quot;UTF8&quot;
