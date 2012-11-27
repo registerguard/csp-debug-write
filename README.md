@@ -57,7 +57,7 @@ Output debug info into all of the above:
 1. `prehtml`: `PREHTML` section (before `<!doctype html>`).
 2. `head`: `HEAD` section (in `<head>`).
 3. `body`: `BODY` section (in `<body>`).
-4. `posthtml`: `POSTHTML` section (after </html>).
+4. `posthtml`: `POSTHTML` section (after `</html>`).
 5. `this`: Called in place (immediately invoked).
 6. `attributes`: Delimited attributes to include in the `<pre>` tag. Format: `attribute|value, attribute|value, …`.
 
