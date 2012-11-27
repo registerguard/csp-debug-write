@@ -6,11 +6,11 @@
 
 #### FEATURES
 
-* Uses an argumentless [`zwrite`](http://docs.intersystems.com/cache20091/csp/docbook/DocBook.UI.Page.cls?KEY=RCOS_czwrite) under the hood.* Process-private globals are not displayed.* Variables are listed by name in ASCII order.* Subscripted variables are listed in subscript tree order.
-* The debug output's HTML has been escaped.
+* Uses an argumentless [`zwrite`](http://docs.intersystems.com/cache20091/csp/docbook/DocBook.UI.Page.cls?KEY=RCOS_czwrite) under the hood.	* Process-private globals are not displayed.	* Variables are listed by name in ASCII order.	* Subscripted variables are listed in subscript tree order.
+* The debug output's `HTML` has been escaped.
 * Debug output labels (optional).
 * User-defined URI query string (optional).
-* Unlimited `<pre>` tag attributes.
+* Unlimited `<pre>` tag `HTML` attributes.
 
 ----
 
